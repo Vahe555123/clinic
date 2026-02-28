@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { API_URL } from '../config';
 
 const authProvider = {
     login: async ({ username, password }) => {
         console.log(username , password);
         
         try {
-            const response = await axios.post('http://localhost:3000/api/login/login', {
+            const response = await axios.post(`${API_URL}/login/login`, {
                 username,
                 password,
             });

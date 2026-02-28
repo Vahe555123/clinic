@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+import { API_URL } from '../../config';
 
 export class serviceItemControllers {
     async getList(resource, params) {
@@ -7,7 +7,7 @@ export class serviceItemControllers {
         const serviceItems = await response.json();
 
         // Получаем список всех сервисов для связи
-        const servicesResponse = await fetch(`http://localhost:3000/api/service/services`);
+        const servicesResponse = await fetch(`${API_URL}/service/services`);
         const services = await servicesResponse.json();
         
         // Создаем карту (словарь) для быстрого доступа к названию сервиса
@@ -54,7 +54,7 @@ export class serviceItemControllers {
         if (data.image) {
             formData.append('image', data.image.rawFile);
         }
-        const response = await fetch(`http://localhost:3000/api/service-item/${resource}`, {
+        const response = await fetch(`${API_URL}/service-item/${resource}`, {
             method: 'POST',
             body: formData,
         });

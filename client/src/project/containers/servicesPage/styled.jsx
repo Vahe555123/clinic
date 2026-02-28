@@ -95,7 +95,7 @@ export const ServicesItemsDiv = styled(Link)`
     font-size: 1.5vw;
     &:hover{
         background-image: ${({ src }) =>
-        src ? `url(http://localhost:3000/uploads/${src})` : 'none'};
+        src ? `url(${src})` : 'none'};
     }
     @media(max-width: 500px){
        width:100%;

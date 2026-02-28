@@ -4,7 +4,7 @@ import { serviceItemControllers } from "./controllers/service-items-controllers"
 import { AuthControllers } from './controllers/auth-controllers';
 import { EquipmentControllers } from './controllers/equipment-controllers';
 import { DoctorControllers } from './controllers/doctor-controllers';
-const API_URL = window.location.href.includes("faustova") ? "http://localhost:3000/api" : "http://localhost:3000/api"
+import { API_URL } from '../config';
 
 const serviceFun = new ServiceControllers();
 const serviceItemFun = new serviceItemControllers();

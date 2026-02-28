@@ -20,7 +20,7 @@ export default function Product(props) {
     <div className="card">
       <Link to={`/equipments/${props.state}`} >
         <ImgDiv>
-          <Img src={`http://localhost:3000/uploads/${props.url}`} alt="product image" />
+          <Img src={props.url} alt="product image" />
         </ImgDiv>
       </Link>
 

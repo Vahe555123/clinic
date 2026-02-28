@@ -19,7 +19,7 @@ export const MyDoctors = ({active}) => {
                     const FIO = e.name.split(" ")
                     return (
                         <CardItem key={e + i} to={`/doctors/${e._id}`}>
-                                <img src={`http://localhost:3000/uploads/${e.image}`} />
+                                <img src={e.image} />
                             <CardInfo>
                                 <Surname>
                                     {FIO[0]}

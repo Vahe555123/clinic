@@ -28,7 +28,7 @@ export const ServicesDiv = styled.div`
 export const ItemsDiv = styled(Link)`
     width: 400px;
     height: 400px;
-    background-image: url(${({ img }) => `http://localhost:3000/uploads/${img}`});
+    background-image: url(${({ img }) => img});
     background-size: 100%;
     filter: grayscale(100%);
     transition: 0.3s;
