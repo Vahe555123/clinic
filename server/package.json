@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "create-admin": "node createAdmin.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@sendgrid/mail": "^8",
+    "axios": "^1",
+    "bcryptjs": "^2",
+    "cloudinary": "^2",
+    "cors": "^2",
+    "dotenv": "^16",
+    "express": "^4",
+    "express-fileupload": "^1",
+    "fs-extra": "^11",
+    "jose": "^4",
+    "mongoose": "^8",
+    "nodemailer": "^6",
+    "nodemon": "^3",
+    "twilio": "^5",
+    "uuid": "^11"
+  }
+}
