@@ -42,7 +42,7 @@ export const SearchPage = () => {
                                             <FlexDiv>
                                                 {data.map((el, index) => (
                                                     <Card key={el.id || index} to={`/doctors/${el._id}`}>
-                                                        <img src={{el.image}} />
+                                                        <img src={el.image} />
                                                         <p>{el.name}</p>
                                                     </Card>
                                                 ))}
@@ -57,7 +57,7 @@ export const SearchPage = () => {
                                             <FlexDiv>
                                                 {data.map((el, index) => (
                                                     <Card key={el.id || index} to={`/equipments/${el._id}`}>
-                                                        <img src={{el.image}} />
+                                                        <img src={el.image} />
                                                         <p>{el.title}</p>
                                                     </Card>
                                                 ))}
@@ -73,7 +73,7 @@ export const SearchPage = () => {
                                                 {data.map((el, index) => (
                                                     <Card key={el.id || index} to={`/${el._id}`}>
                                                         <div>
-                                                            <img src={{el.image}} />
+                                                            <img src={el.image} />
                                                         </div>
                                                         <p>{el.title}</p>
 
@@ -90,7 +90,7 @@ export const SearchPage = () => {
                                             <FlexDiv>
                                                 {data.map((el, index) => (
                                                     <Card key={el.id || index} to={`/${el.serviceId}/${el._id}`}>
-                                                        <img src={{el.image}} />
+                                                        <img src={el.image} />
                                                         <p>{el.title}</p>
                                                     </Card>
                                                 ))}
