@@ -6,8 +6,7 @@ const { uploadToCloudinary, deleteFromCloudinary } = require('../config/cloudina
 class EquipmentControllers {
   async getEquipment(req, res) {
     try {
-      
-      const equipment = await EquipmentModel.find();
+      const equipment = await EquipmentModel.find().sort({ order: 1, title: 1 });
       res.json({ data: equipment });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -55,12 +54,13 @@ class EquipmentControllers {
     }
 
     try {
-      const { title, description } = req.body;
+      const { title, description, link, order } = req.body;
       const newEquipment = new EquipmentModel({
         title,
         description,
-        image: imageUrl
-
+        image: imageUrl,
+        link: link || '',
+        order: order ? parseInt(order, 10) : 0
       });
       newEquipment.id = String(newEquipment._id)
       await newEquipment.save();
@@ -74,7 +74,7 @@ class EquipmentControllers {
   async updateEquipment(req, res) {
     try {
       const { id } = req.params;
-      let { title, description } = req.body;
+      let { title, description, link, order } = req.body;
 
 
       const product = await EquipmentModel.findOne({ id: id });
@@ -98,6 +98,8 @@ class EquipmentControllers {
       }
       product.title = title != "null" ? title : product.title;
       product.description = description != "null" ? description : product.description;
+      if (link !== undefined) product.link = link != "null" ? link : '';
+      if (order !== undefined) product.order = order != "null" ? parseInt(order, 10) : 0;
 
 
       console.log(product);

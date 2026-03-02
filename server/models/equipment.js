@@ -16,6 +16,14 @@ const EquipmentModel = new mongoose.Schema(
       type: String,
       required: false,
     },
+    link: {
+      type: String,
+      required: false,
+    },
+    order: {
+      type: Number,
+      default: 0,
+    },
     id : String
   },
   { timestamps: true } // Добавляет поля createdAt и updatedAt
