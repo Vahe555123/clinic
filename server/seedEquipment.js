@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const EquipmentModel = require('./models/Equipment');
+const EquipmentModel = require('./models/equipment');
 const { uploadToCloudinary } = require('./config/cloudinary');
 
 const url = process.env.DATABASE || 'mongodb://localhost:27017/clinic';
