@@ -29,8 +29,9 @@ export const ItemsDiv = styled(Link)`
     width: 400px;
     height: 400px;
     background-image: url(${({ img }) => img});
-    background-size: 100%;
-    filter: grayscale(100%);
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;    filter: grayscale(100%);
     transition: 0.3s;
     cursor: pointer;
     box-shadow: 0px 0px 53px 1px rgba(0,0,0,0.51) inset;
