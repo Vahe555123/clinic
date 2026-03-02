@@ -1,14 +1,20 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 const Service = require('./models/Service');
 const { ServiceItem } = require('./models/ServiceItem');
+const { uploadToCloudinary } = require('./config/cloudinary');
 
 const url = process.env.DATABASE || 'mongodb://localhost:27017/clinic';
+
+const IMAGES_DIR = path.join(__dirname, 'seed-images');
 
 const data = [
   {
     title: 'Консультационные услуги',
     description: 'Первичные и повторные консультации врачей-косметологов и дерматовенерологов, сбор анамнеза, дерматоскопия.',
+    imageFile: 'service-consultation.jpg',
     serviceItems: [
       {
         title: 'Консультации и осмотры',
@@ -40,6 +46,7 @@ const data = [
   {
     title: 'Инъекции ботулотоксина',
     description: 'Инъекции ботулинического токсина для коррекции мимических морщин, лечения гипергидроза.',
+    imageFile: 'service-botox.jpg',
     serviceItems: [
       {
         title: 'Внутримышечное введение',
@@ -89,6 +96,7 @@ const data = [
   {
     title: 'Контурная пластика',
     description: 'Контурная пластика филлерами, объёмное моделирование, коррекция губ, введение нитей.',
+    imageFile: 'service-contour.jpg',
     serviceItems: [
       {
         title: 'Контурная пластика филлерами',
@@ -187,6 +195,7 @@ const data = [
   {
     title: 'Биоревитализация и мезотерапия',
     description: 'Биоревитализация, биорепарация и мезотерапия для увлажнения, восстановления и омоложения кожи.',
+    imageFile: 'service-biorevit.jpg',
     serviceItems: [
       {
         title: 'Биоревитализация',
@@ -226,6 +235,7 @@ const data = [
   {
     title: 'PRP терапия',
     description: 'Плазмолифтинг — омоложение кожи с использованием собственной плазмы крови, обогащённой тромбоцитами.',
+    imageFile: 'service-prp.jpg',
     serviceItems: [
       {
         title: 'Плазмотерапия',
@@ -258,6 +268,7 @@ const data = [
   {
     title: 'Пилинг',
     description: 'Химические, ультразвуковые пилинги и HydraFacial для глубокого очищения и обновления кожи.',
+    imageFile: 'service-peeling.jpg',
     serviceItems: [
       {
         title: 'Химический пилинг',
@@ -280,7 +291,6 @@ const data = [
             value: [
               { priceServiceTitle: 'Карбоновый пилинг Spectra Peel, 1 зона', codePrice: 'A16.01.024', priceService: '22900' },
               { priceServiceTitle: 'Алмазная микрошлифовка Pristine, 1 зона', codePrice: 'A16.01.024', priceService: '18000' },
-              { priceServiceTitle: 'Ультразвуковой пилинг Ionto-peel, 1 зона', codePrice: 'A22.01.001.002', priceService: '10000' },
             ],
           },
           {
@@ -297,6 +307,7 @@ const data = [
   {
     title: 'Эпиляция',
     description: 'Лазерная эпиляция на аппарате MeDioStar для безболезненного удаления нежелательных волос.',
+    imageFile: 'service-epilation.jpg',
     serviceItems: [
       {
         title: 'Лазерная эпиляция MeDioStar',
@@ -322,6 +333,7 @@ const data = [
   {
     title: 'Лифтинг и уменьшение объёмов',
     description: 'Аппаратный лифтинг, RF-терапия, вакуумный массаж, микротоки, прессотерапия.',
+    imageFile: 'service-lifting.jpg',
     serviceItems: [
       {
         title: 'RF-лифтинг Genius',
@@ -400,6 +412,7 @@ const data = [
   {
     title: 'Аппаратное омоложение',
     description: 'Лазерное омоложение, фототерапия BBL, SMAS-лифтинг, холодная плазма, фотодинамическая терапия.',
+    imageFile: 'service-rejuvenation.jpg',
     serviceItems: [
       {
         title: 'Фототерапия BBL',
@@ -502,6 +515,7 @@ const data = [
   {
     title: 'Удаление новообразований',
     description: 'Удаление доброкачественных новообразований кожи, атером, папиллом, родинок.',
+    imageFile: 'service-removal.jpg',
     serviceItems: [
       {
         title: 'Удаление новообразований',
@@ -534,6 +548,7 @@ const data = [
   {
     title: 'Массаж',
     description: 'Лимфодренажный массаж лица, массаж шеи, криомассаж.',
+    imageFile: 'service-massage.jpg',
     serviceItems: [
       {
         title: 'Массаж лица и тела',
@@ -556,6 +571,7 @@ const data = [
   {
     title: 'Комплексный уход',
     description: 'Комплексные программы по профилактике старения и восстановлению кожи.',
+    imageFile: 'service-complex.jpg',
     serviceItems: [
       {
         title: 'Программы ухода',
@@ -579,6 +595,23 @@ const data = [
   },
 ];
 
+async function uploadImage(filename) {
+  const filePath = path.join(IMAGES_DIR, filename);
+  if (!fs.existsSync(filePath)) {
+    console.warn(`  Файл ${filename} не найден, пропускаем`);
+    return '';
+  }
+  const buffer = fs.readFileSync(filePath);
+  try {
+    const result = await uploadToCloudinary(buffer, 'clinic/services');
+    console.log(`  Загружено: ${filename} -> ${result.secure_url}`);
+    return result.secure_url;
+  } catch (err) {
+    console.error(`  Ошибка загрузки ${filename}:`, err.message);
+    return '';
+  }
+}
+
 async function seed() {
   try {
     await mongoose.connect(url);
@@ -588,16 +621,22 @@ async function seed() {
     await ServiceItem.deleteMany({});
     console.log('Старые услуги удалены');
 
-    let count = 0;
+    let serviceCount = 0;
+    let itemCount = 0;
+
     for (const svc of data) {
+      console.log(`\nСоздаю услугу: ${svc.title}`);
+      const imageUrl = await uploadImage(svc.imageFile);
+
       const service = new Service({
         title: svc.title,
         description: svc.description,
         link: '',
-        image: '',
+        image: imageUrl,
       });
       service.id = String(service._id);
       await service.save();
+      serviceCount++;
 
       for (const item of svc.serviceItems) {
         const si = new ServiceItem({
@@ -605,15 +644,16 @@ async function seed() {
           descArray: item.descArray,
           price: item.price,
           serviceId: service._id,
-          image: '',
+          image: imageUrl,
         });
         si.id = String(si._id);
         await si.save();
-        count++;
+        itemCount++;
+        console.log(`  -> Подуслуга: ${item.title}`);
       }
     }
 
-    console.log(`Создано ${data.length} услуг и ${count} подуслуг`);
+    console.log(`\nГотово! Создано ${serviceCount} услуг и ${itemCount} подуслуг`);
     process.exit(0);
   } catch (err) {
     console.error('Ошибка:', err.message);
