@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
     "create-admin": "node createAdmin.js",
-    "seed-prices": "node seedPrices.js"
+    "seed-prices": "node seedPrices.js",
+    "seed-services": "node seedServices.js"
   },
   "keywords": [],
   "author": "",

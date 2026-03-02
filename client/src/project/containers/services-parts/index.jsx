@@ -4,6 +4,12 @@ import { Breadcrumbs } from "../../components";
 import productApi from "../../api/servicesApi";
 import { useParams } from 'react-router-dom';
 
+const formatPrice = (val) => {
+    if (!val) return '';
+    const num = parseInt(String(val).replace(/\s/g, ''), 10);
+    if (isNaN(num)) return val;
+    return num.toLocaleString('ru-RU');
+};
 
 export const ServicesParts = () => {
 
@@ -69,12 +75,11 @@ export const ServicesParts = () => {
                                     <InfoParts key={e.key + i}>
                                         <InfoTitle>{e.key}</InfoTitle>
                                         <InfoUl>
-                                            {e.value.map((el) => {
+                                            {e.value.map((el, j) => {
                                                 return (
-                                                    <>
-
+                                                    <span key={j}>
                                                         {e.value.length > 1 ? <InfoLi>{el}</InfoLi> : <span>{el}</span>}
-                                                    </>
+                                                    </span>
                                                 )
                                             })}
                                         </InfoUl>
@@ -94,36 +99,27 @@ export const ServicesParts = () => {
                         </PriceTitleInfo>
                         {products?.price && products.price.map((e, i) => {
                             return (
-                                <PriceDiv key={e + i}>
+                                <PriceDiv key={i}>
                                     <PriceMainTitle>
                                         {e.title}
                                     </PriceMainTitle>
-                                    {e.value.map((el) => {
-                                        let num = el.priceService.split("")
-                                        num[num.length - 4] = num[num.length - 4] + " "
-                                        el.priceService = num.join("")
+                                    {e.value.map((el, j) => {
                                         return (
-                                            <PriceParts key={e + i}>
+                                            <PriceParts key={j}>
                                                 <PriceLeftPart>
-                                                    <div>
-                                                        {el.priceServiceTitle}
-                                                    </div>
-                                                    <PriceCode>КОД: {el.codePrice} </PriceCode>
+                                                    <div>{el.priceServiceTitle}</div>
+                                                    {el.codePrice && <PriceCode>КОД: {el.codePrice}</PriceCode>}
                                                 </PriceLeftPart>
                                                 <PriceLine />
                                                 <PriceNum>
-                                                    {el.priceService} ₽
+                                                    {formatPrice(el.priceService)} ₽
                                                 </PriceNum>
                                             </PriceParts>
-
                                         )
                                     })}
                                 </PriceDiv>
-
                             )
-
                         })}
-
                     </DepartmentsDiv>
                 }
             </MainDiv>

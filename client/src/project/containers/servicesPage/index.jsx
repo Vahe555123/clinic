@@ -110,14 +110,11 @@ export const ServicesPage = () => {
                             {productsItems.length > 0 && productsItems.map(e => {
                                 if(e.serviceId._id == products?._id){
                                     return (
-                                        <>
-                                            <ServicesItemsDiv src={e.image} to={`/${products?._id}/${e._id}`}>
-                                                {e.title}
-                                            </ServicesItemsDiv>
-                                        </>
+                                        <ServicesItemsDiv key={e._id} src={e.image} to={`/${products?._id}/${e._id}`}>
+                                            <span>{e.title}</span>
+                                        </ServicesItemsDiv>
                                     )
                                 }
-                              
                             })}
                         </ServicesMainDiv>
                     </ProductsDiv>
