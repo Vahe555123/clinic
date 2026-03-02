@@ -1,217 +1,165 @@
 import styled from "styled-components";
 import { colors } from "../../assets/colors";
-import { Link } from "react-router-dom"
+
 export const MainDiv = styled.div`
     min-height: 100vh;
-    margin-bottom: 200px;
+    margin-bottom: 100px;
 `
 
 export const InfoDiv = styled.div`
     display: flex;
-    @media(max-width: 1000px){}
+    @media(max-width: 900px) {
+        flex-direction: column;
+    }
 `
 
-export const Departments = styled.div`
-    width: 33%;
-    position: ${({ active }) => active ? "fixed" : "static"};
+export const Sidebar = styled.div`
+    width: 280px;
+    min-width: 280px;
+    position: ${({ $sticky }) => $sticky ? "fixed" : "static"};
+    top: 0;
     left: 0;
     height: 100vh;
-    top: 0;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding-left: 100px;
-    padding-top: 50px;
-    @media(max-width: 1100px){
-    padding-left: 20px;
-    }
-    @media(max-width: 800px){
+    gap: 8px;
+    padding: 30px 20px;
+    background: #fafafa;
+    border-right: 1px solid #eee;
+    @media(max-width: 900px) {
         display: none;
     }
-
-
 `
 
-export const DepartmentsItems = styled.a`
-font-size: 20px;
-color: ${({ active }) => active ? colors.orangeColor : "#0006"};
-cursor: pointer;
-font-weight: 700;
-text-decoration: none;
-
-    &:hover{
-        color: ${colors.orangeColor};
-    }
-`
-
-export const ServicesDiv = styled.div`
-    min-height: 100vh;
-    width: 67%;
-    margin-left: ${({ active }) => active ? "33%" : "0%"};
-    padding-top: 50px;
-    @media(max-width: 800px){
-        width: 100%;
-        margin-left : 0;
-    }
-    
-
-`
-
-export const ServicesDesc = styled.div`
-padding-right: 100px;
-padding-left: 50px;
-font-weight:700;
-@media(max-width: 800px){
-    font-size: 13px;
-    padding: 0 50px;
-}
-@media(max-width: 500px){
-    font-size: 11px;
-    padding: 0 10px;
-}
-`
-
-export const ServicesInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 50px;
-    gap: 70px;
-`
-export const ServicesTitle = styled.div`
-padding-left: 50px;
-font-weight:700;
-font-size: 25px;
-@media(max-width: 800px){
-    font-size: 18px;
-    padding: 0 50px;
-}
-@media(max-width: 500px){
-    font-size: 15px;
-    padding: 0 10px;
-}
-`
-export const ServicesItems = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin-top: 20px;
-`
-
-export const ServicesItemsTitle = styled.div`
-
-`
-export const ServicesItemsTitleLink = styled(Link)`
-    font-size: 20px;
-    text-decoration: none;
-    color: ${colors.orangeColor};
-    @media(max-width: 800px){
-    font-size: 18px;
-}
-@media(max-width: 500px){
-    font-size: 15px;
-    padding: 0 10px 0 0;
-}
-`
-
-export const ShowTetx = styled.div`
-    color: #0006;
-    text-decoration: underline;
-    font-size: 18px;
+export const SidebarItem = styled.a`
+    font-size: 14px;
+    color: ${({ $active }) => $active ? colors.orangeColor : "#555"};
     cursor: pointer;
-    @media(max-width: 800px){
-    font-size: 18px;
-    padding: 0 50px;
-}
-@media(max-width: 500px){
+    font-weight: ${({ $active }) => $active ? '700' : '500'};
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: ${({ $active }) => $active ? 'rgba(179,147,178,0.1)' : 'transparent'};
+    transition: all 0.2s;
+    &:hover {
+        color: ${colors.orangeColor};
+        background: rgba(179,147,178,0.08);
+    }
+`
+
+export const Content = styled.div`
+    flex: 1;
+    margin-left: ${({ $sticky }) => $sticky ? "280px" : "0"};
+    padding: 30px 50px;
+    @media(max-width: 900px) {
+        margin-left: 0;
+        padding: 20px 15px;
+    }
+`
+
+export const Disclaimer = styled.div`
+    padding: 16px 20px;
+    background: #fff8f0;
+    border-left: 3px solid ${colors.orangeColor};
+    border-radius: 4px;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 40px;
+`
+
+export const CategoryBlock = styled.div`
+    margin-bottom: 50px;
+`
+
+export const CategoryTitle = styled.h2`
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid ${colors.orangeColor};
+    @media(max-width: 600px) {
+        font-size: 16px;
+    }
+`
+
+export const GroupTitle = styled.div`
     font-size: 15px;
-    padding: 0 10px 0 0;
-}
+    font-weight: 700;
+    color: #333;
+    padding: 12px 0 6px;
+    ${({ $code }) => $code ? `
+        &::after {
+            content: '${$code}';
+            font-size: 11px;
+            color: #999;
+            font-weight: 400;
+            margin-left: 10px;
+        }
+    ` : ''}
+    @media(max-width: 600px) {
+        font-size: 13px;
+    }
 `
-export const ItemsDiv = styled.div`
-       display: flex;
+
+export const PriceRow = styled.div`
+    display: flex;
     justify-content: space-between;
-    padding-right: 30px;
-    margin: 20px 0 ;
-`
-
-export const ShowPriceDiv = styled.div`
-    width:100% ;
-    height: 400px;
-    background-color: green;
-`
-
-
-export const PriceDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-`
-export const PriceLeftPart = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    padding-top: 10px;
-    position: relative;
-    z-index: 2;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    font-size: 17px;
-    padding-right: 10px;
-    @media(max-width: 1000px){
-    font-size: 12px;
-
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px dotted #ddd;
+    gap: 10px;
+    &:last-child {
+        border-bottom: none;
     }
-`;
+`
 
-
-
-export const PriceNum = styled.div`
-    width: 15%;
-    display: flex;
-    position: relative;
-    z-index: 2;
-    background-color: white;
-    display: flex;
-    padding: 0 10px;
-    font-size: 17px;
-     
-    align-items: center;
-    @media(max-width: 1000px){
-    font-size: 12px;
+export const ServiceName = styled.div`
+    flex: 1;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.4;
+    @media(max-width: 600px) {
+        font-size: 13px;
     }
-
-    @media(max-width: 510px){
-    padding:  0;
-    width: 35%;
-    margin-right: 10px;
-}
 `
 
-export const PriceMainTitle = styled.strong`
-    font-size: 25px;
-    margin-top: 15px;
-`
-
-export const PriceCode = styled.div`
+export const ServiceCode = styled.span`
     font-size: 11px;
-    color: rgba(0,0,0,0.5);
+    color: #aaa;
+    margin-right: 8px;
 `
 
-export const PriceParts = styled.div`
-    display: flex;
-    position: relative;
-    justify-content: space-between;
+export const ServicePrice = styled.div`
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: right;
+    @media(max-width: 600px) {
+        font-size: 14px;
+        min-width: 70px;
+    }
 `
-export const PriceLine = styled.div`
-    position: absolute;
-    bottom: 0; 
-    left: 0;
-    right: 0;
-    bottom: 17px;
-    z-index: 1; 
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    height: 1px;
-    width: 100%;
+
+export const MobileSelect = styled.select`
+    display: none;
+    @media(max-width: 900px) {
+        display: block;
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: white;
+        color: #333;
+        margin-bottom: 20px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+    }
 `

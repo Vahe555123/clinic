@@ -23,8 +23,7 @@ const productApi = {
 
     sendMessage: (info) => axiosInstance.post(`/email/send` , info),
 
-
-
+    getPriceCategories: () => axiosInstance.get('/price-category/price-categories'),
 };
 
 export default productApi;

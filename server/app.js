@@ -22,6 +22,7 @@ const doctor = require("./routers/doctor")
 const emailRoutes = require("./routers/email")
 const searchRoutes = require("./routers/search")
 const loginRoutes = require("./routers/login")
+const priceCategoryRoutes = require("./routers/price-category")
 
 
 app.use("/api/service" , servicesRouter)
@@ -32,6 +33,7 @@ app.use("/api/doctor" , doctor)
 app.use("/api/email" , emailRoutes)
 app.use("/api/search" , searchRoutes)
 app.use("/api/login" , loginRoutes)
+app.use("/api/price-category" , priceCategoryRoutes)
 
 
 app.listen(PORT, () => {

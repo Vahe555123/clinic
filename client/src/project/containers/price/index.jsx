@@ -1,149 +1,110 @@
 import { useEffect, useState } from "react";
-import { Departments, DepartmentsItems, InfoDiv, MainDiv, ServicesDiv, ServicesInfo, ServicesTitle, ServicesDesc, ServicesItems, ServicesItemsTitle, ServicesItemsTitleLink, ShowTetx, ItemsDiv,  PriceDiv,  PriceLeftPart, PriceCode, PriceNum, PriceLine, PriceParts } from "./styled";
 import { Breadcrumbs } from "../../components";
 import productApi from "../../api/servicesApi";
+import {
+    MainDiv, InfoDiv, Sidebar, SidebarItem, Content,
+    Disclaimer, CategoryBlock, CategoryTitle, GroupTitle,
+    PriceRow, ServiceName, ServiceCode, ServicePrice, MobileSelect
+} from "./styled";
 
 export const PricePage = () => {
-    const [products, setProducts] = useState([]);
-    const [productsItems, setProductsItems] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [active, setActive] = useState(0);
-    const [showPrice, setShowPrice] = useState();
-    const [isScrolled, setIsScrolled] = useState(false)
+    const [isSticky, setIsSticky] = useState(false);
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchData = async () => {
             try {
-                const response = await productApi.getAllProducts();
-                const response2 = await productApi.getProductsItem();
-                setProducts(response.data.data);
-                setProductsItems(response2.data.data);
+                const res = await productApi.getPriceCategories();
+                setCategories(res.data.data);
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         };
-
-        fetchProducts();
+        fetchData();
     }, []);
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 300) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
-    
-            products.forEach((_, index) => {
-                const section = document.getElementById(`${index}`);
-                if (section) {
-                    const rect = section.getBoundingClientRect();
-    
-                    // Проверяем, находится ли раздел в верхней части окна
-                    const isAtTop = rect.top >= -10 && rect.top <= 10; // Допустимая погрешность ±10 пикселей
-                    if (isAtTop) {
-                        setActive(index);
+            setIsSticky(window.scrollY > 250);
+
+            categories.forEach((_, i) => {
+                const el = document.getElementById(`cat-${i}`);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top >= -50 && rect.top <= 150) {
+                        setActive(i);
                     }
                 }
             });
         };
-    
+
         window.addEventListener("scroll", handleScroll);
-    
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, [products]);
-    
-    const showPriceFun = (index) => {
-        if (index == showPrice) {
-            setShowPrice(null)
-        } else {
-            setShowPrice(index)
-            
-        }
-   
-    }
-    const changeDep = (i) => {
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [categories]);
+
+    const scrollTo = (i) => {
         setActive(i);
-        document.getElementById(`${i}`).scrollIntoView({ behavior: "smooth" });
+        const el = document.getElementById(`cat-${i}`);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
     return (
         <MainDiv>
-            <Breadcrumbs title={"Цены на услуги"} />
+            <Breadcrumbs title="Цены на услуги" />
             <InfoDiv>
-                <Departments active={isScrolled}>
-                    {products?.map((e, i) => (
-                        <DepartmentsItems
-                            key={e._id}
-                            onClick={() => changeDep(i)}
-                            active={active == i}
-                            href={`#${i}`}
+                <Sidebar $sticky={isSticky}>
+                    {categories.map((cat, i) => (
+                        <SidebarItem
+                            key={cat._id}
+                            $active={active === i}
+                            onClick={() => scrollTo(i)}
+                            href={`#cat-${i}`}
                         >
-                            {e.title}
-                        </DepartmentsItems>
+                            {cat.title}
+                        </SidebarItem>
                     ))}
-                </Departments>
-                <ServicesDiv active={isScrolled}>
-                    <ServicesDesc>
-                        Уважаемые пациенты, в связи с изменениями цен у поставщиков,
-                        нестабильностью курса – на нашем сайте информация о ценах может быть не актуальна.
-                        Пожалуйста уточняйте действующие цены по телефону или через WhatsApp.
-                    </ServicesDesc>
-                    <ServicesInfo>
-                        {products?.map((e, i) => (
-                            <ServicesTitle key={e._id} id={i}>
-                                {e.title}
-                                <ServicesItems>
-                                    {productsItems.map((el, index) => (
-                                        el.serviceId._id === e._id && (
-                                            <ServicesItemsTitle key={el._id}>
-                                                <ItemsDiv>
-                                                    <ServicesItemsTitleLink to={`/${e._id}/${el._id}`}>
-                                                        {el.title}
-                                                    </ServicesItemsTitleLink>
-                                                    <ShowTetx onClick={() => showPriceFun(index)}>
-                                                        Показать
-                                                    </ShowTetx>
-                                                </ItemsDiv>
-                                                {index == showPrice &&
-                                                    el?.price && el.price.map((e, i) => {
-                                                        return (
-                                                            <PriceDiv key={e + i}>
-                                                                {e.value.map((el, index) => {
-                                                                    let num = el.priceService.split("")
-                                                                    num[num.length - 4] = num[num.length - 4] + " "
-                                                                    el.priceService = num.join("")
-                                                                    return (
-                                                                        <PriceParts key={el + index}>
-                                                                            <PriceLeftPart>
-                                                                                <div>
-                                                                                    <strong>{e.title} </strong>{el.priceServiceTitle}
-                                                                                </div>
-                                                                                <PriceCode>КОД: {el.codePrice} </PriceCode>
-                                                                            </PriceLeftPart>
-                                                                            <PriceLine />
-                                                                            <PriceNum>
-                                                                                {el.priceService} ₽
-                                                                            </PriceNum>
-                                                                        </PriceParts>
+                </Sidebar>
 
-                                                                    )
-                                                                })}
-                                                            </PriceDiv>
+                <Content $sticky={isSticky}>
+                    <Disclaimer>
+                        Уважаемые пациенты, в связи с изменениями цен у поставщиков
+                        и нестабильностью курса — цены на сайте могут быть не актуальны.
+                        Пожалуйста, уточняйте действующие цены по телефону или через WhatsApp.
+                    </Disclaimer>
 
-                                                        )
-
-                                                    })
-                                                }
-                                            </ServicesItemsTitle>
-                                        )
-                                    ))}
-                                </ServicesItems>
-                            </ServicesTitle>
+                    <MobileSelect
+                        value={active}
+                        onChange={(e) => scrollTo(Number(e.target.value))}
+                    >
+                        {categories.map((cat, i) => (
+                            <option key={cat._id} value={i}>{cat.title}</option>
                         ))}
-                    </ServicesInfo>
-                </ServicesDiv>
+                    </MobileSelect>
+
+                    {categories.map((cat, i) => (
+                        <CategoryBlock key={cat._id} id={`cat-${i}`}>
+                            <CategoryTitle>{cat.title}</CategoryTitle>
+                            {cat.items?.map((item, j) => (
+                                item.isGroup ? (
+                                    <GroupTitle key={j} $code={item.code}>
+                                        {item.name}
+                                    </GroupTitle>
+                                ) : (
+                                    <PriceRow key={j}>
+                                        <ServiceName>
+                                            {item.code && <ServiceCode>{item.code}</ServiceCode>}
+                                            {item.name}
+                                        </ServiceName>
+                                        {item.price && (
+                                            <ServicePrice>{item.price} ₽</ServicePrice>
+                                        )}
+                                    </PriceRow>
+                                )
+                            ))}
+                        </CategoryBlock>
+                    ))}
+                </Content>
             </InfoDiv>
         </MainDiv>
     );

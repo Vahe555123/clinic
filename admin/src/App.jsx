@@ -15,6 +15,9 @@ import { EquipmentCreate } from './components/equipment/equipmentCreate';
 import { DoctorList } from './components/doctors/doctorsList';
 import { DoctorEdit } from './components/doctors/doctorsEdit';
 import { DoctorCreate } from './components/doctors/doctorsCreate';
+import { PriceList } from './components/prices/PriceList';
+import { PriceEdit } from './components/prices/PriceEdit';
+import { PriceCreate } from './components/prices/PriceCreate';
 import authProvider from './authProvider/authProvider';
 
 // Пустой компонент для списка
@@ -43,6 +46,12 @@ const App = () => (
             list={DoctorList}
             edit={DoctorEdit}
             create={DoctorCreate}
+             />
+             <Resource name="price-categories"
+            list={PriceList}
+            edit={PriceEdit}
+            create={PriceCreate}
+            options={{ label: 'Прайс-лист' }}
              />
 
     </Admin>

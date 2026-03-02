@@ -4,6 +4,7 @@ import { serviceItemControllers } from "./controllers/service-items-controllers"
 import { AuthControllers } from './controllers/auth-controllers';
 import { EquipmentControllers } from './controllers/equipment-controllers';
 import { DoctorControllers } from './controllers/doctor-controllers';
+import { PriceControllers } from './controllers/price-controllers';
 import { API_URL } from '../config';
 
 const serviceFun = new ServiceControllers();
@@ -11,6 +12,7 @@ const serviceItemFun = new serviceItemControllers();
 const authFun = new AuthControllers()
 const equipmentFun = new EquipmentControllers()
 const doctorFun = new DoctorControllers()
+const priceFun = new PriceControllers()
 
 const dataProvider = {
   ...restProvider(API_URL),
@@ -26,8 +28,10 @@ const dataProvider = {
       return equipmentFun.getList(resource, params)
     }else if(resource == "doctor"){
       return doctorFun.getList(resource, params)
+    }else if(resource == "price-categories"){
+      return priceFun.getList(resource, params)
     }
-    return restProvider(API_URL).getList(resource, params); // Для остальных ресурсов
+    return restProvider(API_URL).getList(resource, params);
   },
 
 
@@ -43,6 +47,8 @@ const dataProvider = {
       return equipmentFun.delete(resource, params)
     }else if(resource == "doctor"){
       return doctorFun.delete(resource, params)
+    }else if(resource == "price-categories"){
+      return priceFun.delete(resource, params)
     }
   },
 
@@ -56,6 +62,8 @@ const dataProvider = {
       return equipmentFun.create(resource, params)
     }else if(resource == "doctor"){
       return doctorFun.create(resource, params)
+    }else if(resource == "price-categories"){
+      return priceFun.create(resource, params)
     }
   },
 
@@ -71,6 +79,8 @@ const dataProvider = {
       return equipmentFun.update(resource, params)
     }else if(resource == "doctor"){
       return doctorFun.update(resource, params)
+    }else if(resource == "price-categories"){
+      return priceFun.update(resource, params)
     }
 
   },
@@ -87,6 +97,8 @@ const dataProvider = {
       return equipmentFun.getOne(resource, params)
     }else if(resource == "doctor"){
       return doctorFun.getOne(resource, params)
+    }else if(resource == "price-categories"){
+      return priceFun.getOne(resource, params)
     }
 
   },
@@ -102,6 +114,8 @@ const dataProvider = {
       return equipmentFun.deleteMany(resource, params)
     }else if(resource == "doctor"){
       return doctorFun.deleteMany(resource, params)
+    }else if(resource == "price-categories"){
+      return priceFun.deleteMany(resource, params)
     }
 
   }
