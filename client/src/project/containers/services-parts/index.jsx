@@ -1,23 +1,12 @@
 import  { useEffect, useState } from "react";
-import { Departments, DepartmentsButtons, DepartmentsDiv, InfoLi, InfoMain, InfoParts, InfoTitle, InfoUl, MainDiv, PriceCode, PriceDiv, PriceLeftPart, PriceLine, PriceMainTitle, PriceNum, PriceParts, PriceTitle, PriceTitleInfo } from "./styled";
+import { DepartmentsDiv, InfoLi, InfoMain, InfoParts, InfoTitle, InfoUl, MainDiv } from "./styled";
 import { Breadcrumbs } from "../../components";
 import productApi from "../../api/servicesApi";
 import { useParams } from 'react-router-dom';
 
-const formatPrice = (val) => {
-    if (!val) return '';
-    const num = parseInt(String(val).replace(/\s/g, ''), 10);
-    if (isNaN(num)) return val;
-    return num.toLocaleString('ru-RU');
-};
-
 export const ServicesParts = () => {
 
     const { id, index } = useParams();
-    const [departments, setDepartments] = useState([
-        { title: "Об услуге", active: true },
-        { title: "Цены", active: false },
-    ])
     const [products, setProducts] = useState({});
     const [productsTitle, setProductsTitle] = useState({});
     useEffect(() => {
@@ -35,19 +24,6 @@ export const ServicesParts = () => {
         fetchProducts();
     }, []);
 
-    const changeActive = (index) => {
-        setDepartments((el) => {
-            return el.map((e, i) => {
-                if (index == i) {
-                    return { ...e, active: true }
-                }
-                else {
-                    return { ...e, active: false }
-                }
-            })
-        })
-    }
-
     return (
         <>
             <MainDiv>
@@ -57,18 +33,7 @@ export const ServicesParts = () => {
                     active={true}
                     service={products?.title}
                 />
-                <Departments>
-                    {departments.map((e, i) => {
-                        return (
-                            <DepartmentsButtons
-                                active={e.active}
-                                key={e + i}
-                                onClick={() => changeActive(i)}>{e.title}</DepartmentsButtons>
-                        )
-                    })}
-                </Departments>
-                {departments[0].active &&
-                    <DepartmentsDiv>
+                <DepartmentsDiv>
                         {products?.descArray && products?.descArray.map((e, i) => {
                             return (
                                 <InfoMain key={e + i}>
@@ -87,41 +52,7 @@ export const ServicesParts = () => {
                                 </InfoMain>
                             )
                         })}
-                    </DepartmentsDiv>
-                }
-                {departments[1].active &&
-                    <DepartmentsDiv>
-                        <PriceTitle>
-                            Стоимость услуг
-                        </PriceTitle>
-                        <PriceTitleInfo>
-                            Запись на процедуру для первичных пациентов осуществляется только с консультацией. Стоимость консультации варьируется в зависимости от врача.
-                        </PriceTitleInfo>
-                        {products?.price && products.price.map((e, i) => {
-                            return (
-                                <PriceDiv key={i}>
-                                    <PriceMainTitle>
-                                        {e.title}
-                                    </PriceMainTitle>
-                                    {e.value.map((el, j) => {
-                                        return (
-                                            <PriceParts key={j}>
-                                                <PriceLeftPart>
-                                                    <div>{el.priceServiceTitle}</div>
-                                                    {el.codePrice && <PriceCode>КОД: {el.codePrice}</PriceCode>}
-                                                </PriceLeftPart>
-                                                <PriceLine />
-                                                <PriceNum>
-                                                    {formatPrice(el.priceService)} ₽
-                                                </PriceNum>
-                                            </PriceParts>
-                                        )
-                                    })}
-                                </PriceDiv>
-                            )
-                        })}
-                    </DepartmentsDiv>
-                }
+                </DepartmentsDiv>
             </MainDiv>
         </>
     )
